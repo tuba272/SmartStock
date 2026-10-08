@@ -1,0 +1,11 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Alerts</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}body{background:#f4f7fb}.sidebar{position:fixed;left:0;top:0;width:230px;height:100vh;background:#173b67;color:white;padding:25px 15px}.menu{list-style:none}.menu li{margin:8px 0}.menu a{display:block;padding:13px 15px;color:white;text-decoration:none;border-radius:8px}.menu .active{background:#2f6db0}.main{margin-left:230px;padding:30px}.section{background:white;padding:22px;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,.08)}.alert{padding:15px;border-radius:8px;margin-bottom:10px;background:#fff4d6;border-left:5px solid #f0ad00}.critical{background:#ffe0e0;border-left-color:red}</style>
+</head><body>
+<div class="sidebar"><h2 style="text-align:center">📦 SmartStock</h2><br><ul class="menu"><li><a href="/">📊 Dashboard</a></li><li><a href="/inventory">📦 Inventory</a></li><li><a href="/procurement">🛒 Procurement</a></li><li><a href="/issue">📤 Issue Stationery</a></li><li><a href="/analytics">📈 Analytics</a></li><li><a href="/alerts" class="active">⚠️ Alerts</a></li><li><a href="/history">📋 History</a></li></ul></div>
+<div class="main"><h1 style="color:#173b67">⚠️ Stock Alerts</h1><br><div class="section">
+<h2>Low Stock Items ({{ low_items|length }})</h2><br>
+{% for item in low_items %}<div class="alert critical"><strong>CRITICAL: {{ item.name }}</strong> - Only {{ item.quantity }} left! Minimum is {{ item.min_stock }}. Please reorder {{ item.min_stock*2 }} units.</div>{% endfor %}
+{% if low_items|length==0 %}<div class="alert" style="background:#e5f7ea;border-left-color:#2e9d50"><strong>All Good!</strong> No low stock items.</div>{% endif %}
+<h2 style="margin-top:30px">All Items Status</h2><br>
+{% for item in inventory %}<div class="alert" style="background:{% if item.quantity <= item.min_stock %}#ffe0e0{% else %}#e5f7ea{% endif %};border-left-color:{% if item.quantity <= item.min_stock %}red{% else %}#2e9d50{% endif %}"><strong>{{ item.name }}:</strong> {{ item.quantity }} {{ item.unit }} - {% if item.quantity <= item.min_stock %}LOW STOCK{% else %}Healthy{% endif %}</div>{% endfor %}
+</div></div></body></html>

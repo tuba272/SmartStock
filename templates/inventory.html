@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Inventory - SmartStock</title>
+<style>*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}body{background:#f4f7fb}.sidebar{position:fixed;left:0;top:0;width:230px;height:100vh;background:#173b67;color:white;padding:25px 15px}.menu{list-style:none}.menu li{margin:8px 0}.menu a{display:block;padding:13px 15px;color:white;text-decoration:none;border-radius:8px}.menu a:hover,.menu .active{background:#2f6db0}.main{margin-left:230px;padding:30px}.section{background:white;padding:22px;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,.08);margin-bottom:22px}.form{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px}input,select{padding:10px;border:1px solid #ddd;border-radius:6px}button{background:#173b67;color:white;padding:12px 20px;border:none;border-radius:6px;cursor:pointer}table{width:100%;border-collapse:collapse}th,td{padding:13px;text-align:left;border-bottom:1px solid #eee}th{background:#f4f7fb;color:#173b67}.del{color:red;text-decoration:none;font-weight:bold}
+</style></head><body>
+<div class="sidebar"><h2 style="text-align:center">📦 SmartStock</h2><br><ul class="menu"><li><a href="/">📊 Dashboard</a></li><li><a href="/inventory" class="active">📦 Inventory</a></li><li><a href="/procurement">🛒 Procurement</a></li><li><a href="/issue">📤 Issue Stationery</a></li><li><a href="/analytics">📈 Analytics</a></li><li><a href="/alerts">⚠️ Alerts</a></li><li><a href="/history">📋 History</a></li></ul></div>
+<div class="main"><h1 style="color:#173b67">Inventory Management</h1><br>
+<div class="section"><h2>Add New Item</h2><br><form action="/add_item" method="POST" class="form">
+<input type="text" name="name" placeholder="Item Name (e.g. A4 Paper)" required>
+<input type="text" name="category" placeholder="Category" required>
+<input type="number" name="quantity" placeholder="Quantity" required>
+<input type="number" name="min_stock" placeholder="Min Stock Level" required>
+<input type="number" name="price" placeholder="Price per unit" required>
+<input type="text" name="unit" placeholder="Unit (Pcs/Reams)" required>
+<button type="submit">+ Add Item</button>
+</form></div>
+<div class="section"><h2>All Stock Items</h2><br><table><tr><th>ID</th><th>Name</th><th>Category</th><th>Qty</th><th>Min</th><th>Price</th><th>Status</th><th>Action</th></tr>
+{% for item in inventory %}<tr><td>{{ item.id }}</td><td>{{ item.name }}</td><td>{{ item.category }}</td><td>{{ item.quantity }} {{ item.unit }}</td><td>{{ item.min_stock }}</td><td>₹{{ item.price }}</td><td>{% if item.quantity <= item.min_stock %}<span style="background:#fff0c7;padding:5px 10px;border-radius:15px;color:#8a6500">Low</span>{% else %}<span style="background:#dff5e5;padding:5px 10px;border-radius:15px;color:#287a3e">Good</span>{% endif %}</td><td><a href="/delete/{{ item.id }}" class="del">Delete</a></td></tr>{% endfor %}
+</table></div></div></body></html>
